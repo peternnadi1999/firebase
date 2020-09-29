@@ -92,7 +92,7 @@
         <div class="mesgs">
           <div class="msg_history">
             <div v-bind:key="message.id" v-for="message in messages" class="incoming_msg">
-              <div :class="[message.author===displayName?'sent_msg':'received_msg']">
+              <div :class="[message.author===authUser.displayName?'sent_msg':'received_msg']">
                 <div class="received_withd_msg">
                   <p>{{message.message}}</p>
                   <span class="time_date">{{message.author}}</span></div>
@@ -174,18 +174,21 @@ export default {
 
           },
 
-          beforeRouteEnter(to, from, next){
+          beforeRouteEnter(to,from,next){
             next(vm=>{
               
               firebase.auth().onAuthStateChanged(user=>{
                 if(user){
+
                   next();
+
                 }else{
-                  vm.$route.push('/login');
+
+                  vm.$router.push('/login');
                 }
 
               })
-
+ 
             })
           }
           
@@ -273,41 +276,56 @@ img{ max-width:100%;}
   width: 60%;
 }
 .received_msg {
+  display: inline-block;
   padding: 0 0 0 10px;
   vertical-align: top;
-  margin-left: 250px;
-  
-  
+  width: 92%;
+  text-align: left;
  }
- .received_withd_msg p {
-  background: red none repeat scroll 0 0;
+  
+.received_withd_msg p {
+  background: #ad1f1f none repeat scroll 0 0;
   border-radius: 3px;
   color: #646464;
   font-size: 14px;
   margin: 0;
   padding: 5px 10px 5px 12px;
   width: 100%;
+}
+
+.received_msg p{
+ background: rgb(178, 211, 238) none repeat scroll 0 0;
+  border-radius: 3px;
+  color: black;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
   border-radius: 10px;
-  float: left;
 }
 .received_withd_msg { width: 57%;}
+.sent_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  
+  margin-left: 250px;
+}
 
- .sent_withd_msg p {
+  .sent_msg p {
   background:green none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
-  float: right;
-}
-
-.sent_msg {
-  padding: 0 0 0 10px;
-  vertical-align: right;
-  margin-right: 250px;
+  text-align: left;
 }
 .outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.sent_msg {
+  float: right;
+  width: 46%;
+}
 
 .input_msg_write input {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
